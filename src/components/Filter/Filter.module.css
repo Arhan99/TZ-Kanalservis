@@ -1,0 +1,15 @@
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px;
+}
+
+.filterText {
+  margin-right: 10px;
+}
+
+.firstList,
+.secondList {
+  margin-right: 10px;
+}

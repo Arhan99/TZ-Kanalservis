@@ -1,6 +1,10 @@
-.setTable {
+.sort {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 5px;
+  margin: 10px;
+}
+
+.sortText {
+  margin-right: 10px;
 }
