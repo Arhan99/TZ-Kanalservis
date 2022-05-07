@@ -4,11 +4,14 @@ import Sort from "./components/Sort/Sort";
 import Filter from "./components/Filter/Filter";
 import Pagination from "./components/Pagination/Pagination";
 import { useState, useEffect, useMemo } from "react";
-import { SortFilter } from "./types";
+import { FilterOperator, SortFilter } from "./types";
 
 function App() {
   const [data, setData] = useState([]);
   const [sortFilter, setSortFilter] = useState();
+  const [filterField, setFilterField] = useState();
+  const [filterOperator, setFilterOperator] = useState();
+  const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:5000")
@@ -35,13 +38,44 @@ function App() {
     });
   }, [data, sortFilter]);
 
+  const sortedAndFilteredData = useMemo(() => {
+    return sortedData.filter((row) => {
+      switch (filterOperator) {
+        case FilterOperator.EQ: {
+          return row[filterField] === filterValue;
+        }
+        case FilterOperator.IN: {
+          return String(row[filterField]).includes(String(filterValue));
+        }
+        case FilterOperator.GT: {
+          return row[filterField] > filterValue;
+        }
+        case FilterOperator.LT: {
+          return row[filterField] < filterValue;
+        }
+        default: {
+          return true;
+        }
+      }
+    });
+  }, [sortedData, filterField, filterOperator, filterValue]);
+
   return (
     <div>
       <div className="setTable">
         <Sort sortFilter={sortFilter} setSortFilter={setSortFilter} />
-        <Filter />
+        <Filter
+          {...{
+            filterField,
+            setFilterField,
+            filterOperator,
+            setFilterOperator,
+            filterValue,
+            setFilterValue,
+          }}
+        />
       </div>
-      <Table data={sortedData} />
+      <Table data={sortedAndFilteredData} />
       <Pagination />
     </div>
   );
