@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./Sort.module.css";
 import { SortFilter } from "../../types";
 

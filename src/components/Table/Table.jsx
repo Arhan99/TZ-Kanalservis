@@ -3,7 +3,7 @@ import Row from "../Row";
 
 function Table({ data }) {
   return (
-    <div>
+    <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>

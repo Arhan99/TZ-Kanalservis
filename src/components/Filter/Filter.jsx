@@ -1,5 +1,5 @@
 import styles from "./Filter.module.css";
-import { FilterField, FilterOperator } from "../../types";
+import { FilterOperator } from "../../types";
 
 function Filter({
   filterField,
