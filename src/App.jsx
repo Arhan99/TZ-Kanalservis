@@ -13,12 +13,14 @@ function App() {
   const [filterOperator, setFilterOperator] = useState();
   const [filterValue, setFilterValue] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     fetch("http://localhost:5000")
       .then((response) => response.json())
       .then((data) => setData(data));
   }, []);
-
+  //сортировка данных
   const sortedData = useMemo(() => {
     return data.slice().sort((a, b) => {
       switch (sortFilter) {
@@ -37,7 +39,7 @@ function App() {
       }
     });
   }, [data, sortFilter]);
-
+  //сортировка и фильтрация данных
   const sortedAndFilteredData = useMemo(() => {
     return sortedData.filter((row) => {
       switch (filterOperator) {
@@ -59,6 +61,14 @@ function App() {
       }
     });
   }, [sortedData, filterField, filterOperator, filterValue]);
+  //пагинация
+  const dataPerPage = 4;
+  const lastDataIndex = currentPage * dataPerPage;
+  const firstDataIndex = lastDataIndex - dataPerPage;
+  const sortedAndFilteredAndPaginatedData = sortedAndFilteredData.slice(
+    firstDataIndex,
+    lastDataIndex
+  );
 
   return (
     <div>
@@ -75,8 +85,12 @@ function App() {
           }}
         />
       </div>
-      <Table data={sortedAndFilteredData} />
-      <Pagination />
+      <Table data={sortedAndFilteredAndPaginatedData} />
+      <Pagination
+        dataPerPage={dataPerPage}
+        totalDatas={sortedAndFilteredData.length}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }

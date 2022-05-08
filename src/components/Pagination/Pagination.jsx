@@ -1,14 +1,23 @@
+import { Link } from "react-router-dom";
 import styles from "./Pagination.module.css";
 
-function Pagination() {
-  const pages = [1, 2, 3, 4, 5];
+function Pagination({ dataPerPage, totalDatas, setCurrentPage }) {
+  const pageNumbers = [];
 
+  for (let i = 1; i <= Math.ceil(totalDatas / dataPerPage); i++) {
+    pageNumbers.push(i);
+  }
   return (
     <div className={styles.pages}>
-      {pages.map((page, index) => (
-        <span key={index} className={styles.page}>
-          {page}
-        </span>
+      {pageNumbers.map((number, index) => (
+        <Link
+          to=""
+          onClick={() => setCurrentPage(number)}
+          key={index}
+          className={styles.page}
+        >
+          {number}
+        </Link>
       ))}
     </div>
   );
